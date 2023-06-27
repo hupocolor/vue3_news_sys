@@ -9,7 +9,7 @@
 后端springBoot实现:  
 https://github.com/hupocolor/springBoot_news_sys  
 接口详看文档:  
-https://github.com/hupocolor/springBoot_news_sys/blob/master/sys_api.pdf
+https://github.com/hupocolor/springBoot_news_sys/blob/master/news_sys.md
 ## Project Setup
 
 ```sh
