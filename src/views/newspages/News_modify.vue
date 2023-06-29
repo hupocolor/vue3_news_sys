@@ -33,6 +33,13 @@
           </el-input>
 
         </p>
+        <div class="uploadFiles">
+          <el-upload action="api/upload"
+                     :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+            <strong>点此上传文件</strong>
+          </el-upload>
+          <img v-if="news.npicpath" :src="news.npicpath" class="avatar" />
+        </div>
         <el-button type="success" size="medium" @click="editNewsBtn">提交</el-button>
       </form>
       <!-- <h1 id="opt_type">
@@ -69,7 +76,7 @@ import { getNewsById,updateNews } from '../../api/news';
 import HeaderBox from '../../components/HeaderBox.vue';
 import Bottom from '../console_element/Bottom.vue';
 import Left from '../console_element/Left.vue';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
@@ -98,5 +105,23 @@ const editNewsBtn=()=>{
       type: 'success'
     })
   })
+}
+const handleAvatarSuccess = (
+    response,
+    uploadFile
+) => {
+  news.value.npicpath = response
+  ElMessageBox.alert("文件上传成功!")
+}
+
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
+    ElMessage.error('图片必须为jpeg或者png!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('图像大小不得超过2MB!')
+    return false
+  }
+  return true
 }
 </script>

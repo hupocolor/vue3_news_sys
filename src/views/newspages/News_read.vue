@@ -52,7 +52,9 @@
 							<tr>
 								<td colspan="2" align="center"></td>
 							</tr>
+              <el-image v-if="newsDeails.npicpath" :src="newsDeails.npicpath"></el-image>
 							<tr>
+
 								<td colspan="2" v-html="newsDeails.ncontent">
 								</td>
 							</tr>
@@ -140,7 +142,8 @@ const newsDeails = ref({
 		nauthor: '',
 		ntitle: '',
 		ncreatedate: '',
-		ncontent: ''
+		ncontent: '',
+    npicpath: ''
 	})
 const store = useUserStore()
 const role = ref('')

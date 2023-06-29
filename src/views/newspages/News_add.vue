@@ -36,15 +36,11 @@
             
           </p>
           <div class="uploadFiles">
-            <el-upload class="avatar-uploader" action="api/upload"
+            <el-upload action="api/upload"
                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-              <img v-if="news.npicpath" :src="news.npicpath" class="avatar" />
-              <el-icon v-else class="avatar-uploader-icon">
-                <Plus />
-              </el-icon>
+              <strong>点此上传文件</strong>
             </el-upload>
-            <img v-if="news.npicpath" :src="news.npicpath" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <el-image v-if="news.npicpath" :src="news.npicpath" />
           </div>
           <el-button type="success" size="medium" @click="addNewsBtn">提交</el-button>
         </form>
@@ -97,8 +93,12 @@ const handleAvatarSuccess = (
     response,
     uploadFile
 ) => {
+  ElMessageBox.alert("文件上传需要一些时间，请稍等")
   news.npicpath = response
-  ElMessageBox.alert("文件上传成功!")
+  ElMessage({
+    message:"文件上传成功!",
+    type: "success"
+  })
 }
 
 const beforeAvatarUpload = (rawFile) => {
