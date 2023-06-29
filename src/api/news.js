@@ -71,3 +71,13 @@ export function getByKeyword(keyword){
         data: keyword
     })
 }
+
+//上传图片
+
+export function uploadPic(pic){
+    return request({
+        url: 'api/upload',
+        method: 'post',
+        data: pic
+    })
+}

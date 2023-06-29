@@ -35,6 +35,17 @@
             </el-input>
             
           </p>
+          <div class="uploadFiles">
+            <el-upload class="avatar-uploader" action="api/upload"
+                       :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+              <img v-if="news.npicpath" :src="news.npicpath" class="avatar" />
+              <el-icon v-else class="avatar-uploader-icon">
+                <Plus />
+              </el-icon>
+            </el-upload>
+            <img v-if="news.npicpath" :src="news.npicpath" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </div>
           <el-button type="success" size="medium" @click="addNewsBtn">提交</el-button>
         </form>
       </div>
@@ -46,16 +57,17 @@
 </template>
 
 <script setup>
-import { onBeforeMount, reactive, ref } from 'vue';
-import { getTopicList } from '../../api/topic';
-import { addNews } from '../../api/news';
+import { onBeforeMount, reactive, ref} from 'vue';
+import { getTopicList } from '../../api/topic.js';
+import { addNews } from '../../api/news.js';
 import HeaderBox from '../../components/HeaderBox.vue';
 import Bottom from '../console_element/Bottom.vue';
 import Left from '../console_element/Left.vue';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 
 const addNewsBtn = ()=>{
+
   addNews(news).then(res=>{
     ElMessage({
       message: res.data,
@@ -78,4 +90,57 @@ onBeforeMount(()=>{
     topics.value = res.data
   })
 })
+
+
+const imageUrl = ref('')
+const handleAvatarSuccess = (
+    response,
+    uploadFile
+) => {
+  news.npicpath = response
+  ElMessageBox.alert("文件上传成功!")
+}
+
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
+    ElMessage.error('图片必须为jpeg或者png!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('图像大小不得超过2MB!')
+    return false
+  }
+  return true
+}
+
 </script>
+
+<style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>

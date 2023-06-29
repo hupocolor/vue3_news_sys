@@ -31,11 +31,17 @@ export const useUserStore = defineStore('user',{
         }
     },
     persist:{
-        storage: window.localStorage,
+        //开启本地存储
+        // storage: window.localStorage,
+        //开启会话存储
+        storage: window.sessionStorage,
         enabled: true,
         starategies: [{
             key: 'market_user',
-            store: localStorage
+            //本地
+            // store: localStorage
+            //会话
+            store: sessionStorage
         }]
     }
 })
